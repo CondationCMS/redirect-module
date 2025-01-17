@@ -1,0 +1,3 @@
+redirects: 
+  - oldUriPattern: "/test"
+    newUri: "/java"
