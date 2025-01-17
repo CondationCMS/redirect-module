@@ -1,5 +1,5 @@
 ---
-title: NoLinks
+title: Folder index
 template: start.html
 autolinks:
     disabled: true

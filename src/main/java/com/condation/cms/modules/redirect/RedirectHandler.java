@@ -57,7 +57,7 @@ public class RedirectHandler implements HttpHandler {
 			Optional<String> rewritten = redirectRule.get().rewrite(uri);
 			if (rewritten.isPresent()) {
 				response.getHeaders().add(HttpHeader.LOCATION, rewritten.get());
-				response.setStatus(301);
+				response.setStatus(redirectRule.get().getHttpStatus());
 				callback.succeeded();
 				return true;
 			}

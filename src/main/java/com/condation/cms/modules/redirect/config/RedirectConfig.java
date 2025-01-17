@@ -22,15 +22,13 @@ package com.condation.cms.modules.redirect.config;
  * #L%
  */
 import java.io.FileInputStream;
-import java.io.InputStream;
 import java.nio.file.Path;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import org.yaml.snakeyaml.LoaderOptions;
 import org.yaml.snakeyaml.Yaml;
-import org.yaml.snakeyaml.constructor.Constructor;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -49,17 +47,15 @@ public class RedirectConfig {
 
 	public void update() {
 		try (FileInputStream fis = new FileInputStream(this.configFile.toFile())) {
-			Yaml yaml = new Yaml(new Constructor(RedirectConfigData.class, new LoaderOptions()));
-			RedirectConfigData data = yaml.load(fis);
-
-			if (data.getRedirects() != null) {
-				for (RedirectRuleData ruleData : data.getRedirects()) {
-					addRedirect(
-							ruleData.getOldUriPattern(), 
-							ruleData.getNewUri(), 
-							ruleData.isFolderRedirect(), 
-							ruleData.getHttpStatus());
-				}
+			Yaml yaml = new Yaml();
+			Map<String, Object> config = yaml.load(fis);
+			List<Map<String, Object>> redirects = (List<Map<String, Object>>) config.getOrDefault("redirects", Collections.emptyList());
+			for (var redirect : redirects) {
+				addRedirect(
+						(String) redirect.get("oldUriPattern"),
+						(String) redirect.get("newUri"),
+						(Boolean) redirect.getOrDefault("useRegex", false),
+						(int) redirect.getOrDefault("httpStatus", 301));
 			}
 		} catch (Exception e) {
 			log.error("", e);
@@ -71,8 +67,8 @@ public class RedirectConfig {
 		addRedirect(oldUriPattern, newUri, false, httpStatus);
 	}
 
-	public void addRedirect(String oldUriPattern, String newUri, boolean isFolderRedirect, int httpStatus) {
-		rules.add(new RedirectRule(oldUriPattern, newUri, isFolderRedirect, httpStatus));
+	public void addRedirect(String oldUriPattern, String newUri, boolean useRegex, int httpStatus) {
+		rules.add(new RedirectRule(oldUriPattern, newUri, useRegex, httpStatus));
 	}
 
 	public Optional<RedirectRule> findRedirect(String oldUri) {

@@ -24,6 +24,7 @@ package com.condation.cms.modules.redirect.config;
 import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import lombok.Getter;
 
 /**
  *
@@ -33,13 +34,14 @@ public class RedirectRule {
 
 	private final Pattern pattern;
 	private final String newUri;
-	private final boolean isFolderRedirect;
+	private final boolean useRegex;
+	@Getter
 	private final int httpStatus;
 
-	public RedirectRule(String oldUriPattern, String newUri, boolean isFolderRedirect, int httpStatus) {
+	public RedirectRule(String oldUriPattern, String newUri, boolean useRegex, int httpStatus) {
 		this.pattern = Pattern.compile(oldUriPattern);
 		this.newUri = newUri;
-		this.isFolderRedirect = isFolderRedirect;
+		this.useRegex = useRegex;
 		this.httpStatus = httpStatus;
 	}
 
@@ -53,9 +55,8 @@ public class RedirectRule {
 		if (!matcher.matches()) {
 			return Optional.empty();
 		}
-		if (isFolderRedirect) {
-			String relativePath = oldUri.substring(matcher.end());
-			return Optional.of(newUri + relativePath);
+		if (useRegex) {
+			return Optional.of(matcher.replaceAll(newUri));
 		} else {
 			String result = matcher.replaceAll(newUri);
 			return Optional.of(result);

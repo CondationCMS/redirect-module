@@ -1,3 +1,6 @@
 redirects: 
   - oldUriPattern: "/test"
     newUri: "/java"
+  - oldUriPattern: "^/fold1/(.*)$"
+    newUri: "/fold2/$1"
+    useRegex: true
