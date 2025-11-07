@@ -23,7 +23,7 @@ package com.condation.cms.modules.redirect;
  */
 import com.condation.cms.api.extensions.HttpHandler;
 import com.condation.cms.api.feature.features.RequestFeature;
-import com.condation.cms.api.module.CMSRequestContext;
+import com.condation.cms.api.module.SiteRequestContext;
 import com.condation.cms.modules.redirect.config.RedirectRule;
 
 import lombok.RequiredArgsConstructor;
@@ -42,7 +42,7 @@ import org.eclipse.jetty.util.Callback;
 @RequiredArgsConstructor
 public class RedirectHandler implements HttpHandler {
 
-	private final CMSRequestContext requestContext;
+	private final SiteRequestContext requestContext;
 
 	@Override
 	public boolean handle(Request request, Response response, Callback callback) throws Exception {

@@ -24,15 +24,15 @@ package com.condation.cms.modules.redirect;
 
 import com.condation.cms.api.feature.features.CronJobSchedulerFeature;
 import com.condation.cms.api.feature.features.DBFeature;
-import com.condation.cms.api.module.CMSModuleContext;
-import com.condation.cms.api.module.CMSRequestContext;
+import com.condation.cms.api.module.SiteModuleContext;
+import com.condation.cms.api.module.SiteRequestContext;
 import com.condation.cms.api.scheduler.CronJobContext;
 import com.condation.cms.modules.redirect.config.RedirectConfig;
 import com.condation.modules.api.ModuleLifeCycleExtension;
 import com.condation.modules.api.annotation.Extension;
 
 @Extension(ModuleLifeCycleExtension.class)
-public class LifeCycleExtension extends ModuleLifeCycleExtension<CMSModuleContext, CMSRequestContext> {
+public class LifeCycleExtension extends ModuleLifeCycleExtension<SiteModuleContext, SiteRequestContext> {
 
     public static RedirectConfig REDIRECT_CONFIG;
     
